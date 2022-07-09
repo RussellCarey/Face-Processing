@@ -1,8 +1,8 @@
 var imgs = []
 var avgImg
 
-var imgStart = 0
-var numOfImages = 100
+var imgStart = 9000
+var numOfImages = 9300
 
 //////////////////////////////////////////////////////////
 function preload () {
