@@ -1,0 +1,59 @@
+var imgs = []
+var avgImg
+var numOfImages = 30
+
+//////////////////////////////////////////////////////////
+function preload () {
+  // preload() runs once
+  for (let i = 0; i < numOfImages; i++) {
+    imgs[i] = loadImage(`assets/${i}.jpg`)
+  }
+}
+//////////////////////////////////////////////////////////
+function setup () {
+  createCanvas(imgs[0].width * 2, imgs[0].height)
+  pixelDensity(1)
+
+  avgImg = createGraphics(imgs[0].width, imgs[0].height)
+}
+//////////////////////////////////////////////////////////
+function draw () {
+  background(125)
+  image(imgs[0], 0, 0)
+
+  avgImg.loadPixels()
+
+  for (let i = 0; i < numOfImages; i++) {
+    imgs[i].loadPixels()
+  }
+
+  for (var x = 0; x < imgs[0].width; x++) {
+    for (var y = 0; y < imgs[0].height; y++) {
+      var index = (y * imgs[0].width + x) * 4
+
+      avgImg.pixels[index + 0] = 255
+      avgImg.pixels[index + 1] = 0
+      avgImg.pixels[index + 2] = 0
+      avgImg.pixels[index + 3] = 255
+
+      var sumR = 0
+      var sumG = 0
+      var sumB = 0
+
+      for (var i = 0; i < imgs.length; i++) {
+        sumR += imgs[i].pixels[index + 0]
+        sumG += imgs[i].pixels[index + 1]
+        sumB += imgs[i].pixels[index + 2]
+      }
+
+      avgImg.pixels[index + 0] = sumR / 30
+      avgImg.pixels[index + 1] = sumB / 30
+      avgImg.pixels[index + 2] = sumG / 30
+    }
+  }
+
+  avgImg.updatePixels()
+  image(avgImg, imgs[0].width, 0)
+
+  noLoop()
+}
